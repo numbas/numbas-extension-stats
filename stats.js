@@ -219,7 +219,7 @@ Numbas.addExtension('stats',['math','jme'],function(stats) {
 		var fn = listFuncs[i];
 		statsScope.addFunction(new funcObj(fn, [TList],TNum, jStat[fn], {unwrapValues:true}));
 	}
-    var correlationFuncs = 'covariance corrcoeff';
+    var correlationFuncs = ['covariance','corrcoeff'];
     correlationFuncs.forEach(function(fn) {
 		statsScope.addFunction(new funcObj(fn, [TList,TList], TNum, jStat[fn], {unwrapValues:true}));
     });
