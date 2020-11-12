@@ -362,8 +362,8 @@ Numbas.addExtension('stats',['math','jme','jStat'],function(stats) {
 	statsScope.addFunction(new funcObj('tTest',[TNum,TNum,TNum],TNum,jStat.ttest));
 	statsScope.addFunction(new funcObj('tTest',[TNum,'list of number',TNum],TNum,jStat.ttest,{unwrapValues:true}));
 
-	statsScope.addFunction(new funcObj('anovaFScore',['*'list of number''],TNum,jStat.anovafscore,{unwrapValues:true}));
-	statsScope.addFunction(new funcObj('anovaFTest',['*'list of number''],TNum,jStat.anovaftest,{unwrapValues:true}));
+	statsScope.addFunction(new funcObj('anovaFScore',['*list of number'],TNum,jStat.anovafscore,{unwrapValues:true}));
+	statsScope.addFunction(new funcObj('anovaFTest',['*list of number'],TNum,jStat.anovaftest,{unwrapValues:true}));
 	statsScope.addFunction(new funcObj('ftest',[TNum,TNum,TNum],TNum,jStat.ftest));
 
 	statsScope.addFunction(new funcObj('normalci',[TNum,TNum,TNum,TNum],TNum,jStat.normalci));
