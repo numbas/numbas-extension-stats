@@ -236,6 +236,35 @@ Numbas.addExtension('stats',['math','jme','jStat'],function(stats) {
 		return modes;
 	}, {unwrapValues: true}
 	));
+    statsScope.addFunction(new funcObj('mode',['list'],TList,null, {
+        evaluate :function(args,scope) {
+            var sorted = args[0].value.slice().sort(Numbas.jme.compareTokens);
+            var counts = [];
+            var current = null;
+            var count = 0;
+            sorted.forEach(function(t) {
+                if(current==null) {
+                    current = t;
+                    count = 0;
+                    return;
+                }
+                if(Numbas.jme.compareTokens(t,current)==0) {
+                    count += 1;
+                } else {
+                    counts.push({token:current,count:count});
+                    current = t;
+                    count = 0;
+                }
+            });
+            if(current) {
+                counts.push({token:current,count:count});
+            }
+
+            var max = counts.reduce(function(m,c) { return Math.max(m,c.count); },0);
+            var modes = counts.filter(function(c) { return c.count==max; }).map(function(c) { return c.token; });
+            return new TList(modes);
+        }
+    }));
 
 	// fill in geometric distribution because jStat doesn't have it
 	if(!('geometric' in jStat)) {
