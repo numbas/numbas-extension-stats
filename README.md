@@ -6,8 +6,6 @@ There's [documentation at docs.numbas.org.uk](https://docs.numbas.org.uk/en/late
 
 ## Functions
 
-(This list of functions contains descriptions copied from the jStat documentation.
-
 ### Descriptive statistics of a list of numbers
 
 #### [`sum(array)`](http://jstat.github.io/all.html#sum)
@@ -625,27 +623,67 @@ Returns the value of the variance of the Triangular distribution with the parame
 
 ### Statistical Tests
 
-#### [`zScore(value, mean, sd)`](http://jstat.github.io/all.html#jStat.zScore)
+#### [`zScore(value, mean, sd)`](http://jstat.github.io/all.html#jStat.zscore)
 
-#### [`zScore(value, array)`](http://jstat.github.io/all.html#jStat.zScore)
+Returns the z-score of `value` given the data from `array`. `flag===true` denotes
+use of the sample standard deviation.
 
-#### [`zTest(value, mean, sd, sides)`](http://jstat.github.io/all.html#jStat.zTest)
+#### [`zScore(value, array)`](http://jstat.github.io/all.html#jStat.zscore)
 
-#### [`zTest(zscore, sides)`](http://jstat.github.io/all.html#jStat.zTest)
+Returns the z-score of `value` given the data from `array`. `flag===true` denotes
+use of the sample standard deviation.
 
-#### [`tScore(value, mean, sd, n)`](http://jstat.github.io/all.html#jStat.tScore)
+#### [`zTest(value, mean, sd, sides)`](http://jstat.github.io/all.html#jStat.ztest)
 
-#### [`tScore(value, array)`](http://jstat.github.io/all.html#jStat.tScore)
+Returns the p-value of `value` given the data from `array`. `sides` is
+an integer value 1 or 2 denoting a one or two sided z-test. If `sides`
+is not specified the test defaults to a two sided z-test. `flag===true`
+denotes the use of the sample standard deviation.
 
-#### [`tTest(value, mean, sd, n, sides)`](http://jstat.github.io/all.html#jStat.tTest)
+#### [`zTest(zscore, sides)`](http://jstat.github.io/all.html#jStat.ztest)
 
-#### [`tTest(tscore, n, sides)`](http://jstat.github.io/all.html#jStat.tTest)
+Returns the p-value of `value` given the data from `array`. `sides` is
+an integer value 1 or 2 denoting a one or two sided z-test. If `sides`
+is not specified the test defaults to a two sided z-test. `flag===true`
+denotes the use of the sample standard deviation.
 
-#### [`tTest(value, array, sides)`](http://jstat.github.io/all.html#jStat.tTest)
+#### [`tScore(value, mean, sd, n)`](http://jstat.github.io/all.html#jStat.tscore)
 
-#### [`anovaFScore(array1, ..., arrayN)`](http://jstat.github.io/all.html#jStat.anovaFScore)
+Returns the t-score of `value` given the data from `array`.
 
-#### [`anovaFTest(array1, ..., arrayN)`](http://jstat.github.io/all.html#jStat.anovaFTest)
+#### [`tScore(value, array)`](http://jstat.github.io/all.html#jStat.tscore)
+
+Returns the t-score of `value` given the data from `array`.
+
+#### [`tTest(value, mean, sd, n, sides)`](http://jstat.github.io/all.html#jStat.ttest)
+
+Returns the p-value of `value` given the data in `array`.
+`sides` is an integer value 1 or 2 denoting a one or two sided
+t-test. If `sides` is not specified the test defaults to a two
+sided t-test.
+
+#### [`tTest(tscore, n, sides)`](http://jstat.github.io/all.html#jStat.ttest)
+
+Returns the p-value of `value` given the data in `array`.
+`sides` is an integer value 1 or 2 denoting a one or two sided
+t-test. If `sides` is not specified the test defaults to a two
+sided t-test.
+
+#### [`tTest(value, array, sides)`](http://jstat.github.io/all.html#jStat.ttest)
+
+Returns the p-value of `value` given the data in `array`.
+`sides` is an integer value 1 or 2 denoting a one or two sided
+t-test. If `sides` is not specified the test defaults to a two
+sided t-test.
+
+#### [`anovaFScore(array1, ..., arrayN)`](http://jstat.github.io/all.html#jStat.anovafscore)
+
+Returns the f-score of an ANOVA on the arrays.
+
+#### [`anovaFTest(array1, ..., arrayN)`](http://jstat.github.io/all.html#jStat.anovaftest)
+
+Returns the p-value of the f-statistic from the ANOVA
+test on the arrays.
 
 #### [`ftest(fscore, df1, df2)`](http://jstat.github.io/all.html#jStat.ftest)
 
