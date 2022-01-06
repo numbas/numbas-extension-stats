@@ -6,6 +6,9 @@ There's [documentation at docs.numbas.org.uk](https://docs.numbas.org.uk/en/late
 
 ## Functions
 
+This list of functions contains descriptions copied from the jStat documentation.
+Click on the function name to see the original documentation.
+
 ### Descriptive statistics of a list of numbers
 
 #### [`sum(array)`](http://jstat.github.io/all.html#sum)
