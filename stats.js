@@ -228,6 +228,8 @@ Numbas.addExtension('stats',['math','jme','jStat'],function(stats) {
     });
 	statsScope.addFunction(new funcObj('stdev', ['list of number',TBool],TNum, jStat.stdev, {unwrapValues:true}));
 	statsScope.addFunction(new funcObj('variance', ['list of number',TBool],TNum, jStat.variance, {unwrapValues:true}));
+    statsScope.addFunction(new funcObj('population_variance', ['list of number'], TNum, function(l) { return jStat.variance(l,false); }, {unwrapValues: true}));
+    statsScope.addFunction(new funcObj('sample_variance', ['list of number'], TNum, function(l) { return jStat.variance(l,true); }, {unwrapValues: true}));
 	statsScope.addFunction(new funcObj('mode',['list of number'],TList,function(l) { 
 		var modes = jStat.mode(l); 
 		if(typeof(modes)==='number') { 
