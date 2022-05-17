@@ -83,6 +83,14 @@ Returns the standard deviation of the `array` vector.
 By default, the population standard deviation is returned.
 Passing `true` to `flag` returns the sample standard deviation.
 
+#### [`population_stdev(array)`](http://jstat.github.io/all.html#stdev)
+
+Returns the population standard deviation of the `array` vector.
+
+#### [`sample_stdev(array)`](http://jstat.github.io/all.html#stdev)
+
+Returns the sample standard deviation of the `array` vector.
+
 #### [`meandev(array)`](http://jstat.github.io/all.html#meandev)
 
 Returns the mean absolute deviation of the `array` vector.
