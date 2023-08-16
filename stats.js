@@ -232,10 +232,10 @@ Numbas.addExtension('stats',['math','jme','jStat'],function(stats) {
 	statsScope.addFunction(new funcObj('variance', ['list of number',TBool],TNum, jStat.variance, {unwrapValues:true}));
     statsScope.addFunction(new funcObj('population_variance', ['list of number'], TNum, function(l) { return jStat.variance(l,false); }, {unwrapValues: true}));
     statsScope.addFunction(new funcObj('sample_variance', ['list of number'], TNum, function(l) { return jStat.variance(l,true); }, {unwrapValues: true}));
-	statsScope.addFunction(new funcObj('mode',['list of number'],TList,function(l) { 
-		var modes = jStat.mode(l); 
-		if(typeof(modes)==='number') { 
-			modes = [modes]; 
+	statsScope.addFunction(new funcObj('mode',['list of number'],TList,function(l) {
+		var modes = jStat.mode(l);
+		if(typeof(modes)==='number') {
+			modes = [modes];
 		}
 		return modes;
 	}, {unwrapValues: true}
@@ -401,5 +401,68 @@ Numbas.addExtension('stats',['math','jme','jStat'],function(stats) {
 		for(var i=0;i<n;i++) { args.push(TNum) };
 		statsScope.addFunction(new funcObj(name,args,TNum,jStat[name]));
 	}
+
+
+    /* Put values into a specified number of bins. The first bin begins at the minimum value in the given list, and the last bin ends at the maximum value.
+     */
+    statsScope.addFunction(new funcObj('bin',['list of number','number'], types.TList,
+        function(values,num_bins){
+
+            //finding the max & min values in a list
+            var values_max = Math.max(...values);
+            var values_min = Math.min(...values);
+
+            // working out the bin widths
+            var bin_width = (values_max-values_min)/num_bins
+
+            // creating the bins we needed
+            var bins = []
+            for (let i = 0 ;  i < num_bins; i++) {
+                bins.push([])
+            }
+
+            for (let i of values) {
+                var position = (i-values_min)/bin_width;
+                var bin_position = Math.min (num_bins -1, Math.floor(position))
+                bins[bin_position]. push (i)
+            }
+
+            return bins;
+        },
+        {unwrapValues:true, random: false}
+    ));
+
+
+    /* Put values into the given numbers of bins, spanning the given range.
+     */
+    statsScope.addFunction(new funcObj('bin',['list of number', 'number', 'range'], types.TList,
+        function(values, num_bins, range){
+            const start = range[0];
+            const end = range[1];
+
+            // working out the bin width
+            var bin_width = Math.abs(end - start)/num_bins;
+
+            // creating the bins we need
+            var bins = [] ;
+            for (let i = 0 ;  i < num_bins; i++) {
+                bins.push([]);
+            }
+
+            // placing values into bins
+            for (let i of values) {
+                if (i < start || i> end ){
+                    continue;
+                }
+                var position = (i-start)/bin_width;
+                var bin_position = Math.min (num_bins -1, Math.floor(position))
+                bins[bin_position]. push (i)
+            }
+
+            return bins;
+        },
+        {unwrapValues: true, random: false}
+    ));
+
 
 });
