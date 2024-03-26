@@ -208,14 +208,14 @@ Numbas.queueScript('jStat',[],function(module) {
 });
 
 Numbas.addExtension('stats',['math','jme','jStat'],function(stats) {
-	var math = Numbas.math;
-	var types = Numbas.jme.types;
-	var funcObj = Numbas.jme.funcObj;
-	var TNum = types.TNum;
-	var TBool = types.TBool;
-	var TList = types.TList;
+    var math = Numbas.math;
+    var types = Numbas.jme.types;
+    var funcObj = Numbas.jme.funcObj;
+    var TNum = types.TNum;
+    var TBool = types.TBool;
+    var TList = types.TList;
 
-	var statsScope = stats.scope;
+    var statsScope = stats.scope;
 
     function addFunction(name,intype,outcons,fn,options) {
         options = options || {};
@@ -223,29 +223,29 @@ Numbas.addExtension('stats',['math','jme','jStat'],function(stats) {
         return statsScope.addFunction(new Numbas.jme.funcObj(name,intype,outcons,fn,options));
     }
 
-	var listFuncs = 'sum sumsqrd sumsqerr product min max mean meansqerr geomean median cumsum diff range variance stdev meandev meddev coeffvar quartiles'.split(' ');
-	for(var i=0;i<listFuncs.length;i++) {
-		var fn = listFuncs[i];
-		addFunction(fn, ['list of number'],TNum, jStat[fn], {unwrapValues:true});
-	}
+    var listFuncs = 'sum sumsqrd sumsqerr product min max mean meansqerr geomean median cumsum diff range variance stdev meandev meddev coeffvar quartiles'.split(' ');
+    for(var i=0;i<listFuncs.length;i++) {
+        var fn = listFuncs[i];
+        addFunction(fn, ['list of number'],TNum, jStat[fn], {unwrapValues:true});
+    }
     var correlationFuncs = ['covariance','corrcoeff'];
     correlationFuncs.forEach(function(fn) {
-		addFunction(fn, ['list of number', 'list of number'], TNum, jStat[fn], {unwrapValues:true});
+        addFunction(fn, ['list of number', 'list of number'], TNum, jStat[fn], {unwrapValues:true});
     });
-	addFunction('stdev', ['list of number',TBool],TNum, jStat.stdev, {unwrapValues:true});
+    addFunction('stdev', ['list of number',TBool],TNum, jStat.stdev, {unwrapValues:true});
     addFunction('population_stdev', ['list of number'], TNum, function(l) { return jStat.stdev(l,false); }, {unwrapValues: true});
     addFunction('sample_stdev', ['list of number'], TNum, function(l) { return jStat.stdev(l,true); }, {unwrapValues: true});
-	addFunction('variance', ['list of number',TBool],TNum, jStat.variance, {unwrapValues:true});
+    addFunction('variance', ['list of number',TBool],TNum, jStat.variance, {unwrapValues:true});
     addFunction('population_variance', ['list of number'], TNum, function(l) { return jStat.variance(l,false); }, {unwrapValues: true});
     addFunction('sample_variance', ['list of number'], TNum, function(l) { return jStat.variance(l,true); }, {unwrapValues: true});
-	addFunction('mode',['list of number'],TList,function(l) {
-		var modes = jStat.mode(l);
-		if(typeof(modes)==='number') {
-			modes = [modes];
-		}
-		return modes;
-	}, {unwrapValues: true}
-	);
+    addFunction('mode',['list of number'],TList,function(l) {
+        var modes = jStat.mode(l);
+        if(typeof(modes)==='number') {
+            modes = [modes];
+        }
+        return modes;
+    }, {unwrapValues: true}
+    );
     addFunction('mode',['list'],TList,null, {
         evaluate :function(args,scope) {
             var sorted = args[0].value.slice().sort(Numbas.jme.compareTokens);
@@ -276,138 +276,138 @@ Numbas.addExtension('stats',['math','jme','jStat'],function(stats) {
         }
     });
 
-	// fill in geometric distribution because jStat doesn't have it
-	if(!('geometric' in jStat)) {
-		jStat.geometric = {
-			pdf: function(x,p) {
-				return Math.pow(1-p,x-1)*p
-			},
+    // fill in geometric distribution because jStat doesn't have it
+    if(!('geometric' in jStat)) {
+        jStat.geometric = {
+            pdf: function(x,p) {
+                return Math.pow(1-p,x-1)*p
+            },
 
-			cdf: function(x,p) {
-				return 1-Math.pow(1-p,x)
-			},
+            cdf: function(x,p) {
+                return 1-Math.pow(1-p,x)
+            },
 
-			mean: function(p) {
-				return 1/p;
-			},
+            mean: function(p) {
+                return 1/p;
+            },
 
-			median: function(p) {
-				return Math.ceil(-1/(Math.log(1-p)/Math.log(2)));
-			},
-			mode: function() {
-				return 1;
-			},
-			sample: function(p) {
-				var u = Math.random()
-				var z = (Math.log(1-u))/(Math.log(1-p))
+            median: function(p) {
+                return Math.ceil(-1/(Math.log(1-p)/Math.log(2)));
+            },
+            mode: function() {
+                return 1;
+            },
+            sample: function(p) {
+                var u = Math.random()
+                var z = (Math.log(1-u))/(Math.log(1-p))
 
-				return Math.round(z);
-			},
-			variance: function(p) {
-				return (1-p)/(p*p);
-			}
-		}
-	}
+                return Math.round(z);
+            },
+            variance: function(p) {
+                return (1-p)/(p*p);
+            }
+        }
+    }
 
-	//dictionary of distribution methods; values are the number of extra parameters to take
-	var methods = {
+    //dictionary of distribution methods; values are the number of extra parameters to take
+    var methods = {
         pdf: {params: 1, random: false},
-		cdf: {params: 1, random: false},
-		inv: {params: 1, random: false},
-		mean: {params: 0, random: false},
-		median: {params: 0, random: false},
-		mode: {params: 0, random: false},
-		sample: {params: 0, random: true},
-		variance: {params: 0, random: false}
-	}
+        cdf: {params: 1, random: false},
+        inv: {params: 1, random: false},
+        mean: {params: 0, random: false},
+        median: {params: 0, random: false},
+        mode: {params: 0, random: false},
+        sample: {params: 0, random: true},
+        variance: {params: 0, random: false}
+    }
 
-	var jdistributions = {
-		beta: 2,
-		centralF: 2,
-		cauchy: 2,
-		chisquare: 1,
-		exponential: 1,
-		gamma: 2,
-		invgamma: 2,
-		kumaraswamy: 2,
-		lognormal: 2,
-		normal: 2,
-		pareto: 2,
-		studentt: 1,
-		weibull: 2,
-		uniform: 2,
-		binomial: 2,
-		geometric: 1,
-		negbin: 2,
-		hypgeom: 3,
-		poisson: 1,
-		triangular: 3
-	}
+    var jdistributions = {
+        beta: 2,
+        centralF: 2,
+        cauchy: 2,
+        chisquare: 1,
+        exponential: 1,
+        gamma: 2,
+        invgamma: 2,
+        kumaraswamy: 2,
+        lognormal: 2,
+        normal: 2,
+        pareto: 2,
+        studentt: 1,
+        weibull: 2,
+        uniform: 2,
+        binomial: 2,
+        geometric: 1,
+        negbin: 2,
+        hypgeom: 3,
+        poisson: 1,
+        triangular: 3
+    }
 
-	for(var name in jdistributions) {
-		for(var method in methods) {
-			if(method in jStat[name]) {
+    for(var name in jdistributions) {
+        for(var method in methods) {
+            if(method in jStat[name]) {
                 var def = methods[method];
-				var n = jdistributions[name]+def.params;
-				var args = [];
-				for(var i=0;i<n;i++)
-					args.push(TNum);
+                var n = jdistributions[name]+def.params;
+                var args = [];
+                for(var i=0;i<n;i++)
+                    args.push(TNum);
 
-				addFunction(name+method, args, TNum, jStat[name][method], {random: def.random});
-			}
-		}
-	}
+                addFunction(name+method, args, TNum, jStat[name][method], {random: def.random});
+            }
+        }
+    }
 
 
 
-	addFunction('zScore',[TNum,TNum,TNum],TNum,jStat.zscore);
-	addFunction('zScore',[TNum,'list of number'],TNum,jStat.zscore,{unwrapValues:true});
+    addFunction('zScore',[TNum,TNum,TNum],TNum,jStat.zscore);
+    addFunction('zScore',[TNum,'list of number'],TNum,jStat.zscore,{unwrapValues:true});
 
-	addFunction('zTest',[TNum,TNum,TNum,TNum],TNum,jStat.ztest);
-	addFunction('zTest',[TNum,'list of number',TNum],TNum,jStat.ztest,{unwrapValues:true});
+    addFunction('zTest',[TNum,TNum,TNum,TNum],TNum,jStat.ztest);
+    addFunction('zTest',[TNum,'list of number',TNum],TNum,jStat.ztest,{unwrapValues:true});
 
-	addFunction('tScore',[TNum,TNum,TNum,TNum],TNum,jStat.tscore);
-	addFunction('tScore',[TNum,'list of number'],TNum,jStat.tscore,{unwrapValues:true});
+    addFunction('tScore',[TNum,TNum,TNum,TNum],TNum,jStat.tscore);
+    addFunction('tScore',[TNum,'list of number'],TNum,jStat.tscore,{unwrapValues:true});
 
-	addFunction('tTest',[TNum,TNum,TNum,TNum,TNum],TNum,jStat.ttest);
-	addFunction('tTest',[TNum,TNum,TNum],TNum,jStat.ttest);
-	addFunction('tTest',[TNum,'list of number',TNum],TNum,jStat.ttest,{unwrapValues:true});
+    addFunction('tTest',[TNum,TNum,TNum,TNum,TNum],TNum,jStat.ttest);
+    addFunction('tTest',[TNum,TNum,TNum],TNum,jStat.ttest);
+    addFunction('tTest',[TNum,'list of number',TNum],TNum,jStat.ttest,{unwrapValues:true});
 
-	addFunction('anovaFScore',['*list of number'],TNum,jStat.anovafscore,{unwrapValues:true});
-	addFunction('anovaFTest',['*list of number'],TNum,jStat.anovaftest,{unwrapValues:true});
-	addFunction('ftest',[TNum,TNum,TNum],TNum,jStat.ftest);
+    addFunction('anovaFScore',['*list of number'],TNum,jStat.anovafscore,{unwrapValues:true});
+    addFunction('anovaFTest',['*list of number'],TNum,jStat.anovaftest,{unwrapValues:true});
+    addFunction('ftest',[TNum,TNum,TNum],TNum,jStat.ftest);
 
-	addFunction('normalci',[TNum,TNum,TNum,TNum],TNum,jStat.normalci);
-	addFunction('normalci',[TNum,TNum,'list of number'],TNum,jStat.normalci,{unwrapValues:true});
-	addFunction('tci',[TNum,TNum,TNum,TNum],TNum,jStat.tci);
-	addFunction('tci',[TNum,TNum,'list of number'],TNum,jStat.tci,{unwrapValues:true});
+    addFunction('normalci',[TNum,TNum,TNum,TNum],TNum,jStat.normalci);
+    addFunction('normalci',[TNum,TNum,'list of number'],TNum,jStat.normalci,{unwrapValues:true});
+    addFunction('tci',[TNum,TNum,TNum,TNum],TNum,jStat.tci);
+    addFunction('tci',[TNum,TNum,'list of number'],TNum,jStat.tci,{unwrapValues:true});
 
-	var specialFunctions = {
-		betafn: 2,
-		betaln: 2,
-		betacf: 3,
-		ibetainv: 3,
-		ibeta: 3,
-		gammaln: 1,
-		gammafn: 1,
-		gammap: 2,
-		factorialln: 1,
-		factorial: 1,
-		combination: 2,
-		permutation: 2,
-		gammapinv: 2,
-		erf: 1,
-		erfc: 1,
-		erfcinv: 1,
-		randn: 2,
-		randg: 3
-	}
-	for(var name in specialFunctions) {
-		var n = specialFunctions[name];
-		var args = [];
-		for(var i=0;i<n;i++) { args.push(TNum) };
-		addFunction(name,args,TNum,jStat[name]);
-	}
+    var specialFunctions = {
+        betafn: 2,
+        betaln: 2,
+        betacf: 3,
+        ibetainv: 3,
+        ibeta: 3,
+        gammaln: 1,
+        gammafn: 1,
+        gammap: 2,
+        factorialln: 1,
+        factorial: 1,
+        combination: 2,
+        permutation: 2,
+        gammapinv: 2,
+        erf: 1,
+        erfc: 1,
+        erfcinv: 1,
+        randn: 2,
+        randg: 3
+    }
+    for(var name in specialFunctions) {
+        var n = specialFunctions[name];
+        var args = [];
+        for(var i=0;i<n;i++) { args.push(TNum) };
+        addFunction(name,args,TNum,jStat[name]);
+    }
 
 
     /* Put values into a specified number of bins. The first bin begins at the minimum value in the given list, and the last bin ends at the maximum value.
